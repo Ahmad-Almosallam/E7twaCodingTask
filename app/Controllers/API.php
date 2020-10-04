@@ -124,28 +124,11 @@ class API extends ResourceController
             } else {
                 // If it is volunteer check the password
                 if ($this->user->validateUser($res['password'], $password)) {
-                    // Create Token
-                    $issuedat_claim = time(); // issued at
-                    $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-                    $expire_claim = $issuedat_claim + 3600; // expire time in seconds
-                    $payload = array(
-                        "iat" => $issuedat_claim,
-                        "nbf" => $notbefore_claim,
-                        "exp" => $expire_claim,
-                        "data" => array(
-                            "id" => $res['id'],
-                            "name" => $res['name'],
-                            "age" => $res['age'],
-                            "email" => $res['email'],
-                            "is_admin" => 0
-                        )
-                    );
-                    $td = new TokenDecoded([], $payload);
-                    $token = $td->encode($this->privateKey(), 'HS256')->__toString();
+                    // View vlounteer`s data
                     $output = [
                         'status' => 200,
-                        'message' => 'Token created',
-                        'Token' => $token
+                        'message' => "Volunteer information retrieved",
+                        'volunteers' => $this->user->select('id,name,email,age')->where('id', $res['id'])->find()
                     ];
                     return $this->respond($output, 200);
                 } else {
@@ -187,22 +170,21 @@ class API extends ResourceController
         // Get the data
         $data = $tokendDecoded->getPayload();
 
-        // Check if the user is admin or volunteer
+        // Check if the user is admin and view list of all volunteers
 
-        if ($data['data']['is_admin'] == 1) { // the user is Admin then view all the volunteers
+        if ($data['data']['is_admin'] == 1) {
             $output = [
                 'status' => 200,
                 'message' => "List of all the volunteers",
                 'volunteers' => $this->user->select('id,name,email,age')->where('is_admin', 0)->findAll()
             ];
             return $this->respond($output, 200);
-        } else { // the user is volunteer display its info
+        } else {
             $output = [
-                'status' => 200,
-                'message' => "Volunteer information retrieved",
-                'volunteers' => $this->user->select('id,name,email,age')->where('id', $data['data']['id'])->find()
+                'status' => 400,
+                'message' => "Only Admin allowed to view the list",
             ];
-            return $this->respond($output, 200);
+            return $this->respond($output, 400);
         }
     }
 

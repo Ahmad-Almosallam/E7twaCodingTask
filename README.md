@@ -14,7 +14,7 @@ There are 3 endpoits:
 ## Requirements
 You must download XAMPP, MAMP or similar app
 
-###In order to test this API follow these steps:
+### In order to test this API follow these steps:
 
 1. Open XAMPP and run the Apache and MySQL server 
 2. Open this [URL](http://localhost/phpmyadmin/index.php) and import the sql file named `tables.sql` in the repository

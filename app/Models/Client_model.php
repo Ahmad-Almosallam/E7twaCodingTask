@@ -14,6 +14,6 @@ class Client_model extends Model
     protected $returnType     = 'array';
 
     protected $allowedFields = [
-        'client_name', 'api_key', 'is_valid',
+        'client_id', 'api_key', 'is_valid',
     ];
 }

@@ -20,20 +20,8 @@ class API extends ResourceController
     }
 
 
-    public function register($api_key)
+    public function register()
     {
-
-        // Check if the api key exsist and valid
-
-        $res = $this->client->where('api_key', $api_key)->where('is_valid', 1)->find();
-        if (!$res) {
-            $output = [
-                'status' => 400,
-                'message' => 'API key is wrong or invaild'
-            ];
-            return $this->respond($output, 400);
-        }
-
 
         $name = $this->request->getPost('name');
         $age = $this->request->getPost('age');
@@ -78,18 +66,8 @@ class API extends ResourceController
     }
 
 
-    public function login($api_key)
+    public function login()
     {
-        // Check if the api key exsist and valid
-        $res = $this->client->where('api_key', $api_key)->where('is_valid', 1)->find();
-        if (!$res) {
-            $output = [
-                'status' => 400,
-                'message' => 'API key is wrong or invaild'
-            ];
-            return $this->respond($output, 400);
-        }
-
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $res = $this->user->where('email', $email)->find();

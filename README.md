@@ -1,4 +1,4 @@
-# [E7twa](e7twa22.rg) Coding Task
+# [E7twa](e7twa22.org) Coding Task
 
 E7twa coding task is about creating simple web application backend API only for an admin to view a list of volunteers registered in
 the system.
